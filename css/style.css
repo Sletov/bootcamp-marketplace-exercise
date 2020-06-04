@@ -1,0 +1,52 @@
+.content {
+    min-width: 1000px;
+    max-width: 1400px;
+}
+
+/* ITEMS */
+.item {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    font-size: 0.9em;
+}
+
+.card-body {
+    padding: 0.8rem;
+}
+
+.add-to-cart {
+    font-size: inherit;
+}
+
+/* CART */
+.cart-item {
+    border-bottom: 1px solid lightgray;
+    font-size: 0.9em;
+}
+
+.cart-item-minus-button, .cart-item-plus-button {
+    width: 1.5em;
+    height: 1.5em;
+    font-size: inherit;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.cart-remove-from {
+    font-size: inherit;
+}
+
+/* FILTER */
+#filter-block {
+    font-size: 0.9em;
+}
+
+#apply-filter {
+    margin: auto;
+}
+
+#from-price, #to-price {
+    width: 5rem;
+    font-size: 0.9em;
+}
