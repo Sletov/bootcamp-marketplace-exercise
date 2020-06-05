@@ -1,9 +1,34 @@
 var data = new Map;
-data.set("first", {"img": "resources/1.jpg", "description": "Футболка", "price": 1000})
-data.set("second", {"img": "resources/2.jpg", "description": "Футболка", "price": 1000})
-data.set("third", {"img": "resources/3.jpg", "description": "Футболка", "price": 1500})
-data.set("fourth", {"img": "resources/4.jpg", "description": "Поло", "price": 2000})
-data.set("fifth", {"img": "resources/5.jpg", "description": "Поло", "price": 2000})
+data.set("Green", {
+    "img": "resources/1.jpg",
+    "description": "Футболка",
+    "price": 1000,
+    "size_in_stock": ["xs", "s", "m", "l", "xl"]
+})
+data.set("White", {
+    "img": "resources/2.jpg",
+    "description": "Футболка",
+    "price": 1000,
+    "size_in_stock": ["m", "l", "xl"]
+})
+data.set("Kitten", {
+    "img": "resources/3.jpg",
+    "description": "Футболка",
+    "price": 1500,
+    "size_in_stock": ["xs", "s"]
+})
+data.set("Black", {
+    "img": "resources/4.jpg",
+    "description": "Поло",
+    "price": 2000,
+    "size_in_stock": ["m", "l", "xl"]
+})
+data.set("Blue", {
+    "img": "resources/5.jpg",
+    "description": "Поло",
+    "price": 2000,
+    "size_in_stock": ["xs", "s"]
+})
 
 var cart = new Map;
 
@@ -14,13 +39,16 @@ function showItem(id, item) {
     var description = item.description;
     var price = item.price;
 
+    var sizes = item.size_in_stock.toString();
+
     var cardString =
         "<div name='" + id + "' class='card'>" +
         "<img class='card-img-top' src='" + img + "' alt='Card image cap'>" +
         "<div class='card-body p-0 pl-2'>" +
         "<div class='card-info'>" + description + " '" + id + "'</div>" +
-        "<div class='card-info float-left'>Стоимость: <span class='price font-weight-bold'>" + price + "</span>p</div>" +
-        "<div class='card-info float-right'>" +
+        "<div class='card-info'>Стоимость: <span class='price font-weight-bold'>" + price + "</span>p</div>" +
+        "<div class='card-info'>Размеры: <span class='size font-weight-bold'>" + sizes + "</span></div>" +
+        "<div class='card-info'>" +
         "<button type='button' class='add-to-cart btn btn-link' onclick=addToCart('" + id + "')>" +
         "<svg class='bi bi-cart-plus align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>" +
         "<path fill-rule='evenodd' d='M8.5 5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 .5-.5z'/>" +
@@ -41,29 +69,60 @@ function showItem(id, item) {
 
 function getFilteredData() {
 
-    var fromField = document.getElementById('from-price');
-    var toField = document.getElementById('to-price');
+    var filterResult = data;
 
-    var from = fromField.value === "" ? 0 : fromField.value;
-    var to = toField.value === "" ? 99999999 : toField.value;
-
-    if (from === 0 && to === 99999999) {
-        return data;
-    } else {
-        var filteredData = new Map;
-        for (var [id, item] of data.entries()) {
-            if (item.price >= from && item.price <= to){
-                filteredData.set(id, item);
+    var fromPriceField = document.getElementById('from-price');
+    var toPriceField = document.getElementById('to-price');
+    var fromPrice = fromPriceField.value === "" ? 0 : fromPriceField.value;
+    var toPrice = toPriceField.value === "" ? 99999999 : toPriceField.value;
+    if (fromPrice !== 0 || toPrice !== 99999999) {
+        var priceF = new Map;
+        for (var [id, item] of filterResult.entries()) {
+            if (item.price >= fromPrice && item.price <= toPrice) {
+                priceF.set(id, item);
             }
         }
-        return filteredData;
+        filterResult = priceF;
     }
 
+    var sizeFilter = [];
+    var sizeFilterElement = document.getElementById('filter-size');
+    for (var item of sizeFilterElement.getElementsByClassName("btn")) {
+        if (item.classList.contains('active')) {
+            sizeFilter.push(item.innerText.trim().toLowerCase());
+        }
+    }
+    if (sizeFilter.length !== 0) {
+        var sizeF = new Map;
+        for (var [id, item] of filterResult.entries()) {
+            if (includesAll(item.size_in_stock, sizeFilter)) {
+                sizeF.set(id, item);
+            }
+        }
+        filterResult = sizeF;
+    }
+
+    return filterResult;
 }
 
-function releaseFilter(){
+function includesAll(arrayTarget, val) {
+    var res = true;
+    for (var item of val) {
+        res = res && arrayTarget.includes(item);
+    }
+    return res;
+}
+
+function releaseFilter() {
     document.getElementById('from-price').value = "";
     document.getElementById('to-price').value = "";
+
+    var filterSize = document.getElementById('filter-size');
+
+    for (var item of filterSize.getElementsByClassName("btn")) {
+        item.classList.remove('active');
+    }
+
     showAllItems();
 }
 
@@ -177,8 +236,8 @@ function initCartPopover(contentString) {
     $('#cart-button').popover('dispose').popover({
         placement: 'left',
         html: true,
-        content: contentString
-        // trigger: 'focus'
+        content: contentString,
+        trigger: 'focus'
     });
 }
 

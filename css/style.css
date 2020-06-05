@@ -46,6 +46,10 @@
     #from-price, #to-price {
         width: 5rem;
     }
+
+    #filter-size .btn{
+        width: 4rem;
+    }
 }
 
 @media (min-width: 993px) {

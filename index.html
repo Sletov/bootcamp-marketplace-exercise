@@ -38,15 +38,60 @@
             Фильтр
         </a>
     </div>
-    <div id='filter-block' class="collapse multi-collapse">
-        <div class="d-inline m-auto align-middle">
+    <div id='filter-block' class="collapse multi-collapse align-middle">
+        <div class="mt-2">
             <label class="my-auto mx-2" for='from-price'>Цена от</label><input id='from-price' type="number">
             <label class="my-auto mx-2" for='to-price'>до</label><input id='to-price' type="number">
         </div>
-        <button id='apply-filter' type="button" class="btn btn-sm align-middle" onclick="showAllItems()">Показать
-        </button>
-        <button id='release-filter' type="button" class="btn btn-sm align-middle" onclick="releaseFilter()">Сбросить
-        </button>
+
+        <div class="mt-2">
+            <div id="filter-size" class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="my-auto mx-2">Размеры</label>
+                <label id="filter-xs" class="btn btn-light">
+                    <input type="checkbox" name="filter-size" autocomplete="off">XS
+                </label>
+                <label id="filter-s" class="btn btn-light">
+                    <input type="checkbox" name="filter-size" autocomplete="off">S
+                </label>
+                <label id="filter-m" class="btn btn-light">
+                    <input type="checkbox" name="filter-size" autocomplete="off">M
+                </label>
+                <label id="filter-l" class="btn btn-light">
+                    <input type="checkbox" name="filter-size" autocomplete="off">L
+                </label>
+                <label id="filter-xl" class="btn btn-light">
+                    <input type="checkbox" name="options" autocomplete="off">XL
+                </label>
+            </div>
+            <!--            <label class="my-auto mx-2">Размеры</label>-->
+            <!--            <div class="form-check form-check-inline">-->
+            <!--                <input class="filter-checkbox form-check-input" type="checkbox" id="filter-xs" value="xs">-->
+            <!--                <label class="form-check-label" for="filter-xs">xs</label>-->
+            <!--            </div>-->
+            <!--            <div class="form-check form-check-inline">-->
+            <!--                <input class="filter-checkbox form-check-input" type="checkbox" id="filter-s" value="s">-->
+            <!--                <label class="form-check-label" for="filter-s">s</label>-->
+            <!--            </div>-->
+            <!--            <div class="form-check form-check-inline">-->
+            <!--                <input class="filter-checkbox form-check-input" type="checkbox" id="filter-m" value="m">-->
+            <!--                <label class="form-check-label" for="filter-m">m</label>-->
+            <!--            </div>-->
+            <!--            <div class="form-check form-check-inline">-->
+            <!--                <input class="filter-checkbox form-check-input" type="checkbox" id="filter-l" value="l">-->
+            <!--                <label class="form-check-label" for="filter-l">l</label>-->
+            <!--            </div>-->
+            <!--            <div class="form-check form-check-inline">-->
+            <!--                <input class="filter-checkbox form-check-input" type="checkbox" id="filter-xl" value="xl">-->
+            <!--                <label class="form-check-label" for="filter-xl">xl</label>-->
+            <!--            </div>-->
+        </div>
+
+        <div class="mt-2">
+            <button id='apply-filter' type="button" class="btn btn-sm align-middle" onclick="showAllItems()">Показать
+            </button>
+            <button id='release-filter' type="button" class="btn btn-sm align-middle" onclick="releaseFilter()">Сбросить
+            </button>
+        </div>
     </div>
 
     <div id='list' class="row w-100 m-0">
@@ -60,7 +105,6 @@
         </div>
     </footer>
 </div>
-
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
