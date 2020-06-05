@@ -15,9 +15,9 @@ function showItem(id, item) {
     var price = item.price;
 
     var cardString =
-        "<div name='" + id + "' class='card w-75 mx-auto'>" +
+        "<div name='" + id + "' class='card'>" +
         "<img class='card-img-top' src='" + img + "' alt='Card image cap'>" +
-        "<div class='card-body'>" +
+        "<div class='card-body p-0 pl-2'>" +
         "<div class='card-info'>" + description + " '" + id + "'</div>" +
         "<div class='card-info float-left'>Стоимость: <span class='price font-weight-bold'>" + price + "</span>p</div>" +
         "<div class='card-info float-right'>" +
@@ -33,7 +33,7 @@ function showItem(id, item) {
         "</div>";
 
     var card = document.createElement('div');
-    card.className = 'item float-left w-25';
+    card.className = 'item float-left col-6 col-lg-3 p-0 p-lg-3';
     card.innerHTML = cardString;
 
     listBlock.appendChild(card);
