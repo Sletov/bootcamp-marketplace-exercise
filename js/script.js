@@ -177,8 +177,8 @@ function initCartPopover(contentString) {
     $('#cart-button').popover('dispose').popover({
         placement: 'left',
         html: true,
-        content: contentString,
-        trigger: 'focus'
+        content: contentString
+        // trigger: 'focus'
     });
 }
 

@@ -15,10 +15,10 @@
 <div class="container bg-white p-0 col-lg-8 col-12">
     <nav class="navbar navbar-expand-lg bg-success w-100 pr-0">
         <div class="row w-100">
-            <div class="col">
-                <a class="navbar-brand" href="#">
-                    <span class="navbar-brand mb-0 h1 text-light text-truncate ">Магазин корпоративных футболок #Sberbank</span>
-                </a>
+            <div class="col w-75">
+<!--                <a class="navbar-brand" href="#">-->
+                    <span class="navbar-brand mb-0 font-weight-bold text-light text-truncate ">Магазин корпоративных футболок #Sberbank</span>
+<!--                </a>-->
             </div>
             <div class="col w-25 m-auto">
                 <button id='cart-button' type="button" class="btn btn-light float-right">
@@ -42,9 +42,9 @@
     </div>
     <div id='filter-block' class="collapse multi-collapse">
         <div class="d-inline m-auto align-middle">Цена от
-            <input id='from-price' type="number">
+            <input class='mx-2' id='from-price' type="number">
             до
-            <input id='to-price' type="number">
+            <input class='mx-2' id='to-price' type="number">
             включительно
         </div>
         <button id='apply-filter' type="button" class="btn btn-sm align-middle" onclick="showAllItems()">Показать
@@ -71,16 +71,8 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script>
-
-    $(document).ready(function () {
-        showAllItems();
-    });
-    $('#cart-button').popover({
-        placement: 'left',
-        html: true,
-        content: 'Корзина пуста',
-        trigger: 'focus'
-    });
+    showAllItems();
+    initCartPopover('Корзина пуста');
 </script>
 
 </body>

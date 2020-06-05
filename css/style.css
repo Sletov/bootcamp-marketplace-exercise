@@ -1,40 +1,92 @@
 /* ITEMS */
-.item {
-    font-size: 0.9em;
+
+@media (max-width: 992px) {
+    html {
+        font-size: 1.3em;
+    }
+
+    .navbar-brand, #cart-button {
+        font-size: 1.5em;
+    }
+
+    .item {
+        font-size: 1.5em;
+    }
+
+    .popover {
+        max-width: 60%;
+        font-size: 1.5em;
+    }
+
+    .cart-item {
+        border-bottom: 1px solid lightgray;
+    }
+
+    .cart-item-minus-button, .cart-item-plus-button {
+        width: 2em;
+        height: 2em;
+        font-size: inherit;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+    }
+
+    /* FILTER */
+    #show-filter{
+        font-size: 1.3em;
+    }
+    #filter-block {
+        font-size: 1.3em;
+    }
+
+    #apply-filter, #release-filter {
+        margin: auto;
+        font-size: inherit;
+    }
+
+    #from-price, #to-price {
+        width: 5rem;
+    }
+}
+
+@media (min-width: 993px) {
+    .item {
+        font-size: 0.9em;
+    }
+
+    .cart-item {
+        border-bottom: 1px solid lightgray;
+        font-size: 1em;
+    }
+
+    .cart-item-minus-button, .cart-item-plus-button {
+        width: 1.5em;
+        height: 1.5em;
+        font-size: inherit;
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+
+    /* FILTER */
+    #filter-block {
+        font-size: 0.9em;
+    }
+
+    #apply-filter {
+        margin: auto;
+    }
+
+    #from-price, #to-price {
+        width: 5rem;
+        font-size: 0.9em;
+    }
 }
 
 .add-to-cart {
     font-size: inherit;
 }
 
-/* CART */
-.cart-item {
-    border-bottom: 1px solid lightgray;
-    font-size: 0.9em;
-}
-
-.cart-item-minus-button, .cart-item-plus-button {
-    width: 1.5em;
-    height: 1.5em;
-    font-size: inherit;
-    margin-left: 1em;
-    margin-right: 1em;
-}
-
 .cart-remove-from {
     font-size: inherit;
 }
 
-/* FILTER */
-#filter-block {
-    font-size: 0.9em;
-}
 
-#apply-filter {
-    margin: auto;
-}
-
-#from-price, #to-price {
-    width: 5rem;
-    font-size: 0.9em;
-}
