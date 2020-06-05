@@ -48,8 +48,8 @@ function showItem(id, item) {
         "<div class='card-info'>" + description + " '" + id + "'</div>" +
         "<div class='card-info'>Стоимость: <span class='price font-weight-bold'>" + price + "</span>p</div>" +
         "<div class='card-info'>Размеры: <span class='size font-weight-bold'>" + sizes + "</span></div>" +
-        "<div class='card-info'>" +
-        "<button type='button' class='add-to-cart btn btn-link float-right' onclick=addToCart('" + id + "')>" +
+        "<div class='card-info float-right'>" +
+        "<button type='button' class='add-to-cart btn btn-link' onclick=addToCart('" + id + "')>" +
         "<svg class='bi bi-cart-plus align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>" +
         "<path fill-rule='evenodd' d='M8.5 5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 .5-.5z'/>" +
         "<path fill-rule='evenodd' d='M8 7.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0v-2z'/>" +
