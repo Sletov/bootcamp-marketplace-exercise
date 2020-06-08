@@ -32,6 +32,10 @@ data.set("Blue", {
 
 var cart = new Map;
 
+function CartItemKey(id, size) {
+    return `${id},${size}`;
+}
+
 function showItem(id, item) {
     var listBlock = document.getElementById('list');
 
@@ -39,26 +43,32 @@ function showItem(id, item) {
     var description = item.description;
     var price = item.price;
 
-    var sizes = item.size_in_stock.toString();
+    var sizesBlock = `<div class='item-sizes btn-group btn-group-toggle m-2' data-toggle='buttons'>`;
+    for (var size of item.size_in_stock) {
+        sizesBlock += `<label class='item-size btn btn-outline-success p-lg-2 px-4 size-radio'>
+            <input type='radio' name='size' autocomplete='off'>${size.toUpperCase()}
+            </label>`;
+    }
+    sizesBlock += "</div>";
 
     var cardString =
-        "<div name='" + id + "' class='card'>" +
-        "<img class='card-img-top' src='" + img + "' alt='Card image cap'>" +
-        "<div class='card-body p-0 pl-2'>" +
-        "<div class='card-info'>" + description + " '" + id + "'</div>" +
-        "<div class='card-info'>Стоимость: <span class='price font-weight-bold'>" + price + "</span>p</div>" +
-        "<div class='card-info'>Размеры: <span class='size font-weight-bold'>" + sizes + "</span></div>" +
-        "<div class='card-info float-right'>" +
-        "<button type='button' class='add-to-cart btn btn-link' onclick=addToCart('" + id + "')>" +
-        "<svg class='bi bi-cart-plus align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>" +
-        "<path fill-rule='evenodd' d='M8.5 5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 .5-.5z'/>" +
-        "<path fill-rule='evenodd' d='M8 7.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0v-2z'/>" +
-        "<path fill-rule='evenodd' d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/>" +
-        "</svg>" +
-        "В корзину</button>" +
-        "</div>" +
-        "</div>" +
-        "</div>";
+        `<div id='${id}' class='list-item card'>
+        <img class='card-img-top' src='${img}' alt='Card image cap'>
+        <div class='card-body p-0 pl-2'>
+        <div class='card-info'>${description} '${id}'</div>
+        <div class='card-info'>Стоимость: <span class='price font-weight-bold'>${price}</span>p</div>
+        <div class='card-info'>Размеры: <br>${sizesBlock}</div>
+        <div class='card-info'>
+        <button type='button' class='add-to-cart btn btn-link' onclick=addToCart('${id}')>
+        <svg class='bi bi-cart-plus align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
+        <path fill-rule='evenodd' d='M8.5 5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 .5-.5z'/>
+        <path fill-rule='evenodd' d='M8 7.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0v-2z'/>
+        <path fill-rule='evenodd' d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/>
+        </svg>
+        В корзину</button>
+        </div>
+        </div>
+        </div>`;
 
     var card = document.createElement('div');
     card.className = 'item float-left col-6 col-lg-3 p-0 p-lg-3';
@@ -85,17 +95,12 @@ function getFilteredData() {
         filterResult = priceF;
     }
 
-    var sizeFilter = [];
-    var sizeFilterElement = document.getElementById('filter-size');
-    for (var item of sizeFilterElement.getElementsByClassName("btn")) {
-        if (item.classList.contains('active')) {
-            sizeFilter.push(item.innerText.trim().toLowerCase());
-        }
-    }
-    if (sizeFilter.length !== 0) {
+    var sizeFilterElement = document.getElementById('filter-size').getElementsByClassName("active")[0];
+    if (sizeFilterElement.id !== 'filter-all') {
         var sizeF = new Map;
+        var sizeFilter = sizeFilterElement.innerText.trim().toLowerCase();
         for (var [id, item] of filterResult.entries()) {
-            if (includesAll(item.size_in_stock, sizeFilter)) {
+            if (item.size_in_stock.includes(sizeFilter)) {
                 sizeF.set(id, item);
             }
         }
@@ -105,22 +110,17 @@ function getFilteredData() {
     return filterResult;
 }
 
-function includesAll(arrayTarget, val) {
-    var res = true;
-    for (var item of val) {
-        res = res && arrayTarget.includes(item);
-    }
-    return res;
-}
-
 function releaseFilter() {
     document.getElementById('from-price').value = "";
     document.getElementById('to-price').value = "";
 
     var filterSize = document.getElementById('filter-size');
-
     for (var item of filterSize.getElementsByClassName("btn")) {
-        item.classList.remove('active');
+        if (item.id === 'filter-all') {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
     }
 
     showAllItems();
@@ -138,98 +138,168 @@ function showAllItems() {
 }
 
 function addToCart(id) {
-    if (cart.has(id)) {
-        cart.set(id, cart.get(id) + 1);
+    var targetItem = document.getElementById(id);
+
+    var sizeButtons = targetItem.getElementsByClassName('item-sizes')[0].getElementsByClassName("active");
+    if (sizeButtons.length === 0) {
+        alert("Размер не выбран.")
     } else {
-        cart.set(id, 1);
+        var targetSize = targetItem.getElementsByClassName('item-sizes')[0].getElementsByClassName("active")[0]
+            .innerText.toLowerCase();
+
+        var key = CartItemKey(id, targetSize)
+
+        if (cart.has(key)) {
+            cart.set(key, cart.get(key) + 1);
+        } else {
+            cart.set(key, 1);
+        }
+        createCartHtml();
     }
-    certHTML();
 }
 
-function plusToCart(id) {
-    addToCart(id);
-    activateCartPopover()
+function plusToCart(id, size) {
+    var key = CartItemKey(id, size);
+
+    cart.set(key, cart.get(key) + 1);
+
+    createCartHtml();
+    activateCartPopover();
 }
 
-function removeFromCart(id) {
-    if (cart.get(id) == 1) {
-        cart.delete(id);
+function removeFromCart(id, size) {
+    var key = CartItemKey(id, size);
 
-    } else if (cart.get(id) > 1) {
-        cart.set(id, cart.get(id) - 1);
+    if (cart.get(key) === 1) {
+        cart.delete(key);
+
+    } else if (cart.get(key) > 1) {
+        cart.set(key, cart.get(key) - 1);
     }
 
-    certHTML();
-    activateCartPopover()
+    createCartHtml();
+    activateCartPopover();
 }
 
-function removeAllFromCart(id) {
-    cart.delete(id);
-    certHTML();
-    activateCartPopover()
+function removeAllFromCart(id, size) {
+    var key = CartItemKey(id, size);
+
+    cart.delete(key);
+    createCartHtml();
+    activateCartPopover();
 }
 
 function cleanCart() {
     cart.clear();
-    certHTML();
-    activateCartPopover()
+    createCartHtml();
+    activateCartPopover();
 }
 
-function certHTML() {
+function createCartHtml() {
 
-    if (cart.size == 0) {
+    if (cart.size === 0) {
         initCartPopover('Корзина пуста');
     } else {
         var contentString = "";
 
         var totalPrice = 0;
 
-        for (var [id, count] of cart.entries()) {
+        for (var [key, count] of cart.entries()) {
+            var id = key.split(",")[0];
+            var size = key.split(",")[1];
             var item = data.get(id);
             var img = item.img;
             var price = item.price;
 
             contentString +=
-                "<div name='" + id + "' class='cart-item w-100 float-left mx-auto'>" +
-                "<div class='cart-item-img float-left w-25'>" +
-                "<img class='w-100' src='" + img + "'>" +
-                "</div>" +
-                "<div class='cart-item-info float-left w-75'>" +
-                "'<span class='cart-item-name'>" + id + "</span>'<br>" +
-                "Стоимость: <span class='cart-price'>" + price + "</span>p<br>" +
-                "Количество: " +
-                "<button type='button' class='cart-item-minus-button btn btn-light p-0' onclick=removeFromCart('" + id + "')>-</button>" +
-                "<span class='cart-count'>" + count + "</span>" +
-                "<button type='button' class='cart-item-plus-button btn btn-light p-0' onclick=plusToCart('" + id + "')>+</button><br>" +
-                "Общая стоимость: <span class='cart-full-price'>" + (price * count) + "</span>p<br>" +
-                "<button type='button' class='cart-remove-from btn btn-link' onclick=removeAllFromCart('" + id + "')>" +
-                "<svg class='bi bi-cart-dash align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>" +
-                "<path fill-rule='evenodd' d='M6 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z'/>" +
-                "<path fill-rule='evenodd' d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/>" +
-                "</svg>" +
-                "Удалить из корзины" +
-                "</button>" +
-                "</div>" +
-                "</div>";
+                `<div id='cart-item-${id}' class='cart-item w-100 float-left mx-auto'>
+                <div class='cart-item-img float-left w-25'>
+                <img class='w-100' src='${img}'>
+                </div>
+                <div class='cart-item-info float-left w-75'>
+                '<span class='cart-item-name'>${id}</span>'<br>
+                Размер: <span class='font-weight-bold cart-size'>${size.toUpperCase()}</span><br>
+                Стоимость: <span class='font-weight-bold cart-price'>${price}</span>p<br>
+                Количество:
+                <button type='button' class='cart-item-minus-button btn btn-light p-0' onclick="removeFromCart('${id}', '${size}')">-</button>
+                <span class='font-weight-bold cart-count'>${count}</span>
+                <button type='button' class='cart-item-plus-button btn btn-light p-0' onclick="plusToCart('${id}', '${size}')">+</button><br>
+                Общая стоимость: <span class='font-weight-bold cart-full-price'>${price * count}</span>p<br>
+                <button type='button' class='cart-remove-from btn btn-link' onclick="removeAllFromCart('${id}', '${size}')">
+                <svg class='bi bi-cart-dash align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
+                <path fill-rule='evenodd' d='M6 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z'/>
+                <path fill-rule='evenodd' d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/>
+                </svg>
+                Удалить из корзины
+                </button>
+                </div>
+                </div>`;
 
             totalPrice += price * count;
 
         }
 
         contentString +=
-            "<div>" +
-            "Итоговая стоимость: <span id='cart-total-price'>" + totalPrice + "</span>p<br>" +
-            "<button type='button' class='cart-remove-from btn btn-link' onclick=cleanCart()>" +
-            "<svg class='bi bi-cart-dash align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>" +
-            "<path fill-rule='evenodd' d='M6 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z'/>" +
-            "<path fill-rule='evenodd' d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/>" +
-            "</svg>" +
-            "Очистить корзину" +
-            "</button>" +
-            "</div>";
+            `<div>
+            Итоговая стоимость: <span id='cart-total-price'>${totalPrice}</span>p<br>
+            <button type='button' class='cart-remove-from btn btn-link p-2' onclick="cleanCart()">
+                <svg class='bi bi-cart-dash align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
+                    <path fill-rule='evenodd' d='M6 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z'/>
+                    <path fill-rule='evenodd' d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/>
+                </svg>
+                Очистить корзину
+            </button><br>
+            <button type='button' class='cart-send-order btn btn-outline-success p-2' onclick="sendOrder()">
+                Оформить заказ
+            </button>
+            </div>`;
 
         initCartPopover(contentString);
     }
+}
+
+function sendOrder() {
+    document.getElementById('list').classList.add("d-none");
+    document.getElementById('collapse-filter-button').classList.add("d-none");
+
+    document.getElementById('cart-button').classList.add("disabled");
+    $('#cart-button').popover('dispose');
+
+    document.getElementById('order-page').classList.remove("d-none");
+
+    var totalPrice = 0;
+
+    var orderListString = "";
+
+    for (var [key, count] of cart.entries()) {
+        var id = key.split(",")[0];
+        var size = key.split(",")[1];
+        var item = data.get(id);
+        var description = item.description;
+        var img = item.img;
+        var price = item.price;
+
+        orderListString +=
+            `<div class="item col-6 col-lg-3 p-0 p-lg-3">
+                <div id='${id}' class='order-list-item card'>
+                    <img class='card-img-top' src='${img}' alt='Card image cap'>
+                    <div class='card-body p-0 pl-2'>
+                        <div class='card-info'>${description} '${id}'</div>
+                        <div class='card-info'>Размер: <span class='size font-weight-bold'>${size}</span></div>
+                        <div class='card-info'>Стоимость: <span class='price font-weight-bold'>${price}</span>p</div>
+                        <div class='card-info'>Количество: <span class='count font-weight-bold'>${count}</span></div>
+                        <div class='card-info'>Общая стоимость: <span class='total-price font-weight-bold'>${price * count}</span>p</div>
+                    </div>
+                </div>
+            </div>`;
+
+        totalPrice += price * count;
+
+    }
+
+
+    document.getElementById('order-list').innerHTML = orderListString;
+
 }
 
 function initCartPopover(contentString) {

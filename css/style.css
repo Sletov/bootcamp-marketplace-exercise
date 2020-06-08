@@ -31,11 +31,19 @@
     }
 
     /* FILTER */
-    #show-filter{
+    #show-filters{
         font-size: 1.3em;
     }
-    #filter-block {
+    #filter-collapsible-block {
         font-size: 1.3em;
+    }
+
+    #details-form{
+        font-size: 1.3em;
+    }
+
+    .send-order-button, .reset-order-button{
+        font-size: inherit;
     }
 
     #apply-filter, #release-filter {
@@ -57,6 +65,10 @@
         font-size: 0.9em;
     }
 
+    .size-radio{
+        font-size: 0.9em;
+    }
+
     .cart-item {
         border-bottom: 1px solid lightgray;
         font-size: 1em;
@@ -66,12 +78,12 @@
         width: 1.5em;
         height: 1.5em;
         font-size: inherit;
-        margin-left: 1em;
-        margin-right: 1em;
+        margin-left: 0.8em;
+        margin-right: 0.8em;
     }
 
     /* FILTER */
-    #filter-block {
+    #filter-collapsible-block {
         font-size: 0.9em;
     }
 
@@ -89,6 +101,6 @@
     font-size: inherit;
 }
 
-.cart-remove-from {
+.cart-remove-from, .cart-send-order {
     font-size: inherit;
 }

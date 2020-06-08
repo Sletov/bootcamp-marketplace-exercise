@@ -18,8 +18,8 @@
             <div class="col w-75">
                 <span class="navbar-brand mb-0 font-weight-bold text-light text-truncate ">Магазин корпоративных футболок #Sberbank</span>
             </div>
-            <div class="col w-25 m-auto">
-                <button id='cart-button' type="button" class="btn btn-light float-right">
+            <div class="col w-25 my-auto pr-0 pr-lg-2">
+                <a tabindex="0" role="button" id='cart-button' class="btn btn-light float-right">
                     <svg class="bi bi-cart4 align-middle" width='1.5em' height='1.5em' viewBox="0 0 16 16"
                          fill="currentColor"
                          xmlns="http://www.w3.org/2000/svg">
@@ -27,66 +27,49 @@
                               d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
                     </svg>
                     Корзина
-                </button>
+                </a>
             </div>
         </div>
     </nav>
 
-    <div>
-        <a id='show-filter' class="btn btn-link dropdown-toggle" data-toggle="collapse" href="#filter-block"
+    <div id='collapse-filter-button'>
+        <a id='show-filters' class="btn btn-link dropdown-toggle" data-toggle="collapse"
+           href="#filter-collapsible-block"
            role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
             Фильтр
         </a>
     </div>
-    <div id='filter-block' class="collapse multi-collapse align-middle">
-        <div class="mt-2">
-            <label class="my-auto mx-2" for='from-price'>Цена от</label><input id='from-price' type="number">
-            <label class="my-auto mx-2" for='to-price'>до</label><input id='to-price' type="number">
+    <div id='filter-collapsible-block' class="collapse multi-collapse align-middle">
+        <div class="m-3">
+            <label class="my-auto m-3" for='from-price'>Цена от</label><input id='from-price' type="number">
+            <label class="my-auto m-3" for='to-price'>до</label><input id='to-price' type="number">
         </div>
 
-        <div class="mt-2">
+        <div class="m-3">
             <div id="filter-size" class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="my-auto mx-2">Размеры</label>
-                <label id="filter-xs" class="btn btn-light">
-                    <input type="checkbox" name="filter-size" autocomplete="off">XS
+                <label class="my-auto m-3">Размеры</label>
+                <label id="filter-all" class="btn btn-outline-success active">
+                    <input type="radio" name="filter-size" autocomplete="off">Все
                 </label>
-                <label id="filter-s" class="btn btn-light">
-                    <input type="checkbox" name="filter-size" autocomplete="off">S
+                <label id="filter-xs" class="btn btn-outline-success">
+                    <input type="radio" name="filter-size" autocomplete="off">XS
                 </label>
-                <label id="filter-m" class="btn btn-light">
-                    <input type="checkbox" name="filter-size" autocomplete="off">M
+                <label id="filter-s" class="btn btn-outline-success">
+                    <input type="radio" name="filter-size" autocomplete="off">S
                 </label>
-                <label id="filter-l" class="btn btn-light">
-                    <input type="checkbox" name="filter-size" autocomplete="off">L
+                <label id="filter-m" class="btn btn-outline-success">
+                    <input type="radio" name="filter-size" autocomplete="off">M
                 </label>
-                <label id="filter-xl" class="btn btn-light">
-                    <input type="checkbox" name="options" autocomplete="off">XL
+                <label id="filter-l" class="btn btn-outline-success">
+                    <input type="radio" name="filter-size" autocomplete="off">L
+                </label>
+                <label id="filter-xl" class="btn btn-outline-success">
+                    <input type="radio" name="filter-size" autocomplete="off">XL
                 </label>
             </div>
-            <!--            <label class="my-auto mx-2">Размеры</label>-->
-            <!--            <div class="form-check form-check-inline">-->
-            <!--                <input class="filter-checkbox form-check-input" type="checkbox" id="filter-xs" value="xs">-->
-            <!--                <label class="form-check-label" for="filter-xs">xs</label>-->
-            <!--            </div>-->
-            <!--            <div class="form-check form-check-inline">-->
-            <!--                <input class="filter-checkbox form-check-input" type="checkbox" id="filter-s" value="s">-->
-            <!--                <label class="form-check-label" for="filter-s">s</label>-->
-            <!--            </div>-->
-            <!--            <div class="form-check form-check-inline">-->
-            <!--                <input class="filter-checkbox form-check-input" type="checkbox" id="filter-m" value="m">-->
-            <!--                <label class="form-check-label" for="filter-m">m</label>-->
-            <!--            </div>-->
-            <!--            <div class="form-check form-check-inline">-->
-            <!--                <input class="filter-checkbox form-check-input" type="checkbox" id="filter-l" value="l">-->
-            <!--                <label class="form-check-label" for="filter-l">l</label>-->
-            <!--            </div>-->
-            <!--            <div class="form-check form-check-inline">-->
-            <!--                <input class="filter-checkbox form-check-input" type="checkbox" id="filter-xl" value="xl">-->
-            <!--                <label class="form-check-label" for="filter-xl">xl</label>-->
-            <!--            </div>-->
         </div>
 
-        <div class="mt-2">
+        <div class="m-3">
             <button id='apply-filter' type="button" class="btn btn-sm align-middle" onclick="showAllItems()">Показать
             </button>
             <button id='release-filter' type="button" class="btn btn-sm align-middle" onclick="releaseFilter()">Сбросить
@@ -96,6 +79,48 @@
 
     <div id='list' class="row w-100 m-0">
 
+    </div>
+
+    <div id="order-page" class="w-100 m-0 d-none">
+        <div class='w-100 h4 p-2'>Оформление заказа:</div>
+        <form id="details-form" class="w-75 mx-auto needs-validation" novalidate>
+            <div class="form-row mb-2">
+                <div class="col-12 col-lg-6">
+                    <label for="validationCustom01">Ф.И.О.</label>
+                    <input type="text" class="form-control" id="validationCustom01" value="" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <label for="validationCustom02">Email</label>
+                    <input type="email" class="form-control" id="validationCustom02" value="" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+            </div>
+            <div class="form-row mb-3">
+                <div class="col-12">
+                    <label for="validationCustom03">Адрес</label>
+                    <input type="text" class="form-control" id="validationCustom03" value="" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+            </div>
+            <div class="form-row mb-2">
+                <div class="col-6 mx-auto text-center">
+                    <button class="send-order-button btn btn-success" type="submit">Оформить!</button>
+                    <button class="reset-order-button btn btn-success" type="reset">Отменить</button>
+                </div>
+            </div>
+        </form>
+
+        <div class='w-100 h4 p-2'>Товары:</div>
+        <div id='order-list' class="row w-100 m-0">
+
+        </div>
     </div>
 
 
