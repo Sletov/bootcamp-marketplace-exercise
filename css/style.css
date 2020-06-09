@@ -5,11 +5,7 @@
         font-size: 1.3em;
     }
 
-    .navbar-brand, #cart-button {
-        font-size: 1.5em;
-    }
-
-    .item {
+    .item, .navbar-brand, #cart-button {
         font-size: 1.5em;
     }
 
@@ -31,18 +27,11 @@
     }
 
     /* FILTER */
-    #show-filters{
-        font-size: 1.3em;
-    }
-    #filter-collapsible-block {
+    #show-filters, #filter-collapsible-block, #order-details-form, #order-info, #order-controls, #submit-order-success {
         font-size: 1.3em;
     }
 
-    #details-form{
-        font-size: 1.3em;
-    }
-
-    .send-order-button, .reset-order-button{
+    .send-order-button, .reset-order-button, #full-name, #phone-number, #email, #address, #submit-order-button, #decline-order-button{
         font-size: inherit;
     }
 

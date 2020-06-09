@@ -37,7 +37,7 @@ function CartItemKey(id, size) {
 }
 
 function showItem(id, item) {
-    var listBlock = document.getElementById('list');
+    var listBlock = document.getElementById('item-list-block');
 
     var img = item.img;
     var description = item.description;
@@ -127,7 +127,7 @@ function releaseFilter() {
 }
 
 function showAllItems() {
-    var listBlock = document.getElementById('list');
+    var listBlock = document.getElementById('item-list-block');
     listBlock.innerHTML = "";
 
     var filteredData = getFilteredData();
@@ -249,7 +249,7 @@ function createCartHtml() {
                 </svg>
                 Очистить корзину
             </button><br>
-            <button type='button' class='cart-send-order btn btn-outline-success p-2' onclick="sendOrder()">
+            <button type='button' class='cart-send-order btn btn-outline-success p-2' onclick="makeOrder()">
                 Оформить заказ
             </button>
             </div>`;
@@ -258,16 +258,17 @@ function createCartHtml() {
     }
 }
 
-function sendOrder() {
-    document.getElementById('list').classList.add("d-none");
-    document.getElementById('collapse-filter-button').classList.add("d-none");
+function makeOrder() {
+    document.getElementById('item-list-block').classList.add("d-none");
+    document.getElementById('filter-block').classList.add("d-none");
 
     document.getElementById('cart-button').classList.add("disabled");
     $('#cart-button').popover('dispose');
 
-    document.getElementById('order-page').classList.remove("d-none");
+    document.getElementById('order-block').classList.remove("d-none");
 
     var totalPrice = 0;
+    var totalCount = 0;
 
     var orderListString = "";
 
@@ -294,12 +295,56 @@ function sendOrder() {
             </div>`;
 
         totalPrice += price * count;
+        totalCount += count;
 
     }
 
+    $('#order-total-price').val(totalPrice);
+    $('#order-total-count').val(totalCount);
 
     document.getElementById('order-list').innerHTML = orderListString;
 
+}
+
+function sendOrder() {
+    var detailsForm = document.getElementById('order-details-form');
+    if (detailsForm.checkValidity() === true) {
+        document.getElementById('order-controls').classList.add("d-none");
+
+        // alert("111")
+    }
+}
+
+function closeOrder() {
+    cart = new Map();
+
+    document.getElementById('item-list-block').classList.remove("d-none");
+    document.getElementById('filter-block').classList.remove("d-none");
+
+    document.getElementById('cart-button').classList.remove("disabled");
+    createCartHtml();
+
+    document.getElementById('order-block').classList.add("d-none");
+    document.getElementById('order-controls').classList.remove("d-none");
+
+    $('#submit-order-decline').collapse('hide');
+    $('#submit-order-success').collapse('hide');
+}
+
+function cancelDeclineOrder(){
+    $('#submit-order-decline').collapse('hide');
+}
+
+function addValidationForOrderDetails() {
+    var submitOrderButton = document.getElementById('submit-order-button');
+    submitOrderButton.addEventListener('click', function (event) {
+        var detailsForm = document.getElementById('order-details-form');
+        if (detailsForm.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        detailsForm.classList.add('was-validated');
+    })
 }
 
 function initCartPopover(contentString) {

@@ -32,92 +32,143 @@
         </div>
     </nav>
 
-    <div id='collapse-filter-button'>
+
+    <div id='filter-block'>
         <a id='show-filters' class="btn btn-link dropdown-toggle" data-toggle="collapse"
            href="#filter-collapsible-block"
            role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
             Фильтр
         </a>
-    </div>
-    <div id='filter-collapsible-block' class="collapse multi-collapse align-middle">
-        <div class="m-3">
-            <label class="my-auto m-3" for='from-price'>Цена от</label><input id='from-price' type="number">
-            <label class="my-auto m-3" for='to-price'>до</label><input id='to-price' type="number">
-        </div>
+        <div id='filter-collapsible-block' class="collapse multi-collapse align-middle">
+            <div class="m-3">
+                <label class="my-auto m-3" for='from-price'>Цена от</label><input id='from-price' type="number">
+                <label class="my-auto m-3" for='to-price'>до</label><input id='to-price' type="number">
+            </div>
 
-        <div class="m-3">
-            <div id="filter-size" class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="my-auto m-3">Размеры</label>
-                <label id="filter-all" class="btn btn-outline-success active">
-                    <input type="radio" name="filter-size" autocomplete="off">Все
-                </label>
-                <label id="filter-xs" class="btn btn-outline-success">
-                    <input type="radio" name="filter-size" autocomplete="off">XS
-                </label>
-                <label id="filter-s" class="btn btn-outline-success">
-                    <input type="radio" name="filter-size" autocomplete="off">S
-                </label>
-                <label id="filter-m" class="btn btn-outline-success">
-                    <input type="radio" name="filter-size" autocomplete="off">M
-                </label>
-                <label id="filter-l" class="btn btn-outline-success">
-                    <input type="radio" name="filter-size" autocomplete="off">L
-                </label>
-                <label id="filter-xl" class="btn btn-outline-success">
-                    <input type="radio" name="filter-size" autocomplete="off">XL
-                </label>
+            <div class="m-3">
+                <div id="filter-size" class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="my-auto m-3">Размеры</label>
+                    <label id="filter-all" class="btn btn-outline-success active">
+                        <input type="radio" name="filter-size" autocomplete="off">Все
+                    </label>
+                    <label id="filter-xs" class="btn btn-outline-success">
+                        <input type="radio" name="filter-size" autocomplete="off">XS
+                    </label>
+                    <label id="filter-s" class="btn btn-outline-success">
+                        <input type="radio" name="filter-size" autocomplete="off">S
+                    </label>
+                    <label id="filter-m" class="btn btn-outline-success">
+                        <input type="radio" name="filter-size" autocomplete="off">M
+                    </label>
+                    <label id="filter-l" class="btn btn-outline-success">
+                        <input type="radio" name="filter-size" autocomplete="off">L
+                    </label>
+                    <label id="filter-xl" class="btn btn-outline-success">
+                        <input type="radio" name="filter-size" autocomplete="off">XL
+                    </label>
+                </div>
+            </div>
+
+            <div class="m-3">
+                <button id='apply-filter' type="button" class="btn btn-sm align-middle" onclick="showAllItems()">
+                    Показать
+                </button>
+                <button id='release-filter' type="button" class="btn btn-sm align-middle" onclick="releaseFilter()">
+                    Сбросить
+                </button>
             </div>
         </div>
-
-        <div class="m-3">
-            <button id='apply-filter' type="button" class="btn btn-sm align-middle" onclick="showAllItems()">Показать
-            </button>
-            <button id='release-filter' type="button" class="btn btn-sm align-middle" onclick="releaseFilter()">Сбросить
-            </button>
-        </div>
     </div>
 
-    <div id='list' class="row w-100 m-0">
+    <div id='item-list-block' class="row w-100 m-0">
 
     </div>
 
-    <div id="order-page" class="w-100 m-0 d-none">
+    <div id="order-block" class="w-100 m-0 d-none">
         <div class='w-100 h4 p-2'>Оформление заказа:</div>
-        <form id="details-form" class="w-75 mx-auto needs-validation" novalidate>
+        <form id="order-details-form" class="w-75 mx-auto needs-validation" novalidate>
             <div class="form-row mb-2">
-                <div class="col-12 col-lg-6">
-                    <label for="validationCustom01">Ф.И.О.</label>
-                    <input type="text" class="form-control" id="validationCustom01" value="" required>
-                    <div class="valid-feedback">
-                        Looks good!
+                <div class="col-12 col-lg-4">
+                    <label for="full-name">Ф.И.О.</label>
+                    <input type="text" class="form-control" id="full-name" required>
+                    <div class="invalid-feedback">
+                        Заполните поле
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
-                    <label for="validationCustom02">Email</label>
-                    <input type="email" class="form-control" id="validationCustom02" value="" required>
-                    <div class="valid-feedback">
-                        Looks good!
+                <div class="col-12 col-lg-4">
+                    <label for="phone-number">Телефон</label>
+                    <input type="tel" class="form-control" id="phone-number" required>
+                    <div class="invalid-feedback">
+                        Заполните поле
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" required>
+                    <div class="invalid-feedback">
+                        Заполните поле
                     </div>
                 </div>
             </div>
             <div class="form-row mb-3">
                 <div class="col-12">
-                    <label for="validationCustom03">Адрес</label>
-                    <input type="text" class="form-control" id="validationCustom03" value="" required>
-                    <div class="valid-feedback">
-                        Looks good!
+                    <label for="address">Адрес</label>
+                    <textarea id='address' class="form-control" type="text" rows="2" required></textarea>
+                    <div class="invalid-feedback">
+                        Заполните поле
                     </div>
-                </div>
-            </div>
-            <div class="form-row mb-2">
-                <div class="col-6 mx-auto text-center">
-                    <button class="send-order-button btn btn-success" type="submit">Оформить!</button>
-                    <button class="reset-order-button btn btn-success" type="reset">Отменить</button>
                 </div>
             </div>
         </form>
 
-        <div class='w-100 h4 p-2'>Товары:</div>
+        <div class="my-2 collapse" id="submit-order-success">
+            <div class="col-5 col-lg-4 mx-auto text-center p-2 border border-success rounded">
+                Вы успешно оформили заказ, скоро наш менеджер с вами свяжется!
+                <button class="d-block mx-auto mt-2 send-order-button btn btn-success" onclick="closeOrder()">Окей</button>
+            </div>
+        </div>
+        <div id='order-controls' class="mb-2">
+            <div class="col-6 mx-auto text-center">
+                <a id='submit-order-button' class="btn btn-success" data-toggle="collapse"
+                   href="#submit-order-success"
+                   role="button" aria-expanded="false" aria-controls="submit-order-success" onclick="sendOrder()">
+                    Оформить!
+                </a>
+                <a id='decline-order-button' class="btn btn-danger" data-toggle="collapse"
+                   href="#submit-order-decline"
+                   role="button" aria-expanded="false" aria-controls="submit-order-decline">
+                    Отменить
+                </a>
+            </div>
+            <div class="mt-2 collapse" id="submit-order-decline">
+                <div class="col-5 col-lg-4 mx-auto text-center p-2 border border-danger rounded">
+                    Вы уверены?
+                    <button id='submit-decline-order-button' class="send-order-button btn btn-danger" onclick="closeOrder()">Точно</button>
+                    <button id='cancel-decline-order-button' class="reset-order-button btn btn-danger" onclick="cancelDeclineOrder()">Нет</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class='w-100 h4 p-2'>Заказ:</div>
+        <form id='order-info' class="form-inline w-75 mx-auto">
+
+            <label for="order-total-price" class="col-5 col-lg-3 px-0 justify-content-end">Итоговая цена:</label>
+            <div class="col-7 col-lg-9">
+                <input type="text" readonly class="form-control-plaintext font-weight-bold"
+                       id="order-total-price"
+                       value="">
+            </div>
+
+            <label for="order-total-count" class="col-5 col-lg-3 px-0 justify-content-end">Количество товаров:</label>
+            <div class="col-7 col-lg-9">
+                <input type="text" readonly class="form-control-plaintext font-weight-bold"
+                       id="order-total-count"
+                       value="">
+            </div>
+        </form>
+
+        <div class='w-100 h5 p-2'>Товары:</div>
         <div id='order-list' class="row w-100 m-0">
 
         </div>
@@ -144,6 +195,7 @@
 <script>
     showAllItems();
     initCartPopover('Корзина пуста');
+    addValidationForOrderDetails();
 </script>
 
 </body>
