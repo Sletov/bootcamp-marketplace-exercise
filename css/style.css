@@ -26,12 +26,15 @@
         margin-right: 0.5em;
     }
 
-    /* FILTER */
-    #show-filters, #filter-collapsible-block, #order-details-form, #order-info, #order-controls, #submit-order-success {
+    #order-details-form, #order-info, #order-controls, #submit-order-success{
+        font-size: 1.4em;
+    }
+
+    #show-filters, #filter-collapsible-block, #client-bar {
         font-size: 1.3em;
     }
 
-    .send-order-button, .reset-order-button, #full-name, #phone-number, #email, #address, #submit-order-button, #decline-order-button{
+    .send-order-button, .reset-order-button, #full-name, #phone-number, #email, #address, #submit-order-button, #decline-order-button, #show-client-info-bar {
         font-size: inherit;
     }
 
@@ -44,7 +47,7 @@
         width: 5rem;
     }
 
-    #filter-size .btn{
+    #filter-size .btn {
         width: 4rem;
     }
 }
@@ -54,7 +57,7 @@
         font-size: 0.9em;
     }
 
-    .size-radio{
+    .size-radio {
         font-size: 0.9em;
     }
 

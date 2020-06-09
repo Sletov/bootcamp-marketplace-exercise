@@ -12,11 +12,11 @@
 
 <body class="bg-light">
 
-<div class="container bg-white p-0 col-lg-8 col-12">
-    <nav class="navbar navbar-expand-lg bg-success w-100 pr-0">
+<div class="container bg-white p-0 col-lg-8 col-12 mb-0">
+    <nav class="navbar bg-success w-100 pr-0">
         <div class="row w-100">
             <div class="col w-75">
-                <span class="navbar-brand mb-0 font-weight-bold text-light text-truncate ">Магазин корпоративных футболок #Sberbank</span>
+                <span class="navbar-brand mb-0 font-weight-bold text-light">Магазин корпоративных футболок #Sberbank</span>
             </div>
             <div class="col w-25 my-auto pr-0 pr-lg-2">
                 <a tabindex="0" role="button" id='cart-button' class="btn btn-light float-right">
@@ -30,13 +30,27 @@
                 </a>
             </div>
         </div>
+        <div id="client-bar" class="bg-success w-100 mt-0 d-none">
+            <a id='show-client-info-bar' class="btn btn-link text-light dropdown-toggle p-0 m-0"
+               data-toggle="collapse"
+               href="#client-info-bar"
+               role="button" aria-expanded="false" aria-controls="client-info-bar">
+                Привет, <span id="username"></span>
+            </a>
+            <div id="client-info-bar" class="col-12 collapse multi-collapse align-middle text-light">
+                <div>Бонусные баллы: <span class="font-weight-bold" id="bonus-points"></span> баллов</div>
+                <div>Текущий уровень: <span class="font-weight-bold" id="client-status"></span></div>
+                <div>Текущая скидка: <span class="font-weight-bold" id="client-discount"></span>%</div>
+                <div>До следующего уровня: <span class="font-weight-bold" id="next-client-status-points-remains"></span>
+                </div>
+            </div>
+        </div>
     </nav>
-
 
     <div id='filter-block'>
         <a id='show-filters' class="btn btn-link dropdown-toggle" data-toggle="collapse"
            href="#filter-collapsible-block"
-           role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+           role="button" aria-expanded="false" aria-controls="filter-collapsible-block">
             Фильтр
         </a>
         <div id='filter-collapsible-block' class="collapse multi-collapse align-middle">
@@ -85,7 +99,7 @@
     </div>
 
     <div id="order-block" class="w-100 m-0 d-none">
-        <div class='w-100 h4 p-2'>Оформление заказа:</div>
+        <div class='w-100 h4 p-2 text-center mb-1 mt-3'>Оформление заказа</div>
         <form id="order-details-form" class="w-75 mx-auto needs-validation" novalidate>
             <div class="form-row mb-2">
                 <div class="col-12 col-lg-4">
@@ -124,7 +138,8 @@
         <div class="my-2 collapse" id="submit-order-success">
             <div class="col-5 col-lg-4 mx-auto text-center p-2 border border-success rounded">
                 Вы успешно оформили заказ, скоро наш менеджер с вами свяжется!
-                <button class="d-block mx-auto mt-2 send-order-button btn btn-success" onclick="closeOrder()">Окей</button>
+                <button class="d-block mx-auto mt-2 send-order-button btn btn-success" onclick="closeOrder()">Окей
+                </button>
             </div>
         </div>
         <div id='order-controls' class="mb-2">
@@ -141,34 +156,61 @@
                 </a>
             </div>
             <div class="mt-2 collapse" id="submit-order-decline">
-                <div class="col-5 col-lg-4 mx-auto text-center p-2 border border-danger rounded">
+                <div class="col-6 col-lg-4 mx-auto text-center p-2 border border-danger rounded">
                     Вы уверены?
-                    <button id='submit-decline-order-button' class="send-order-button btn btn-danger" onclick="closeOrder()">Точно</button>
-                    <button id='cancel-decline-order-button' class="reset-order-button btn btn-danger" onclick="cancelDeclineOrder()">Нет</button>
+                    <button id='submit-decline-order-button' class="send-order-button btn btn-danger"
+                            onclick="closeOrder()">Точно
+                    </button>
+                    <button id='cancel-decline-order-button' class="reset-order-button btn btn-danger"
+                            onclick="cancelDeclineOrder()">Нет
+                    </button>
                 </div>
             </div>
         </div>
 
-
-        <div class='w-100 h4 p-2'>Заказ:</div>
+        <hr class="my-3">
+        <div class='w-100 h4 p-2 text-center my-1'>Заказ</div>
         <form id='order-info' class="form-inline w-75 mx-auto">
-
-            <label for="order-total-price" class="col-5 col-lg-3 px-0 justify-content-end">Итоговая цена:</label>
-            <div class="col-7 col-lg-9">
-                <input type="text" readonly class="form-control-plaintext font-weight-bold"
-                       id="order-total-price"
-                       value="">
-            </div>
-
             <label for="order-total-count" class="col-5 col-lg-3 px-0 justify-content-end">Количество товаров:</label>
             <div class="col-7 col-lg-9">
                 <input type="text" readonly class="form-control-plaintext font-weight-bold"
                        id="order-total-count"
                        value="">
             </div>
+
+            <label for="order-total-price" class="col-5 col-lg-3 px-0 justify-content-end">Общая цена:</label>
+            <div class="col-7 col-lg-9">
+                <input type="text" readonly class="form-control-plaintext font-weight-bold"
+                       id="order-total-price"
+                       value="">
+            </div>
+
+            <label for="order-status" class="col-5 col-lg-3 px-0 justify-content-end">Статус:</label>
+            <div class="col-7 col-lg-9">
+                <input type="text" readonly class="form-control-plaintext font-weight-bold"
+                       id="order-status"
+                       value="">
+            </div>
+
+            <label for="order-total-price-with-status" class="col-5 col-lg-3 px-0 justify-content-end">Цена с учётом
+                статуса:</label>
+            <div class="col-7 col-lg-9">
+                <input type="text" readonly class="form-control-plaintext font-weight-bold"
+                       id="order-total-price-with-status"
+                       value="">
+            </div>
+
+            <label for="order-points-count" class="col-5 col-lg-3 px-0 justify-content-end">Баллов за покупку:</label>
+            <div class="col-7 col-lg-9">
+                <input type="text" readonly class="form-control-plaintext font-weight-bold"
+                       id="order-points-count"
+                       value="">
+            </div>
+
         </form>
 
-        <div class='w-100 h5 p-2'>Товары:</div>
+        <hr class="my-3">
+        <div class='w-100 h4 p-2 text-center my-1'>Товары</div>
         <div id='order-list' class="row w-100 m-0">
 
         </div>

@@ -30,6 +30,16 @@ data.set("Blue", {
     "size_in_stock": ["xs", "s"]
 })
 
+var clientStatuses = [];
+clientStatuses.push({"name": "Не слыхал", "points": 0, "discount": 0});
+clientStatuses.push({"name": "Слышал", "points": 500, "discount": 0.05});
+clientStatuses.push({"name": "Клиент", "points": 1000, "discount": 0.1});
+clientStatuses.push({"name": "VIP Клиент", "points": 2000, "discount": 0.2});
+clientStatuses.push({"name": "Акционер", "points": 4000, "discount": 0.3});
+
+var username = "";
+var clientPoints = 0;
+
 var cart = new Map;
 
 function CartItemKey(id, size) {
@@ -297,10 +307,19 @@ function makeOrder() {
         totalPrice += price * count;
         totalCount += count;
 
+        $('#full-name').val(username);
+
     }
 
     $('#order-total-price').val(totalPrice);
     $('#order-total-count').val(totalCount);
+
+    var status = getClientStatus();
+    var orderTotalPriceWithStatus = totalPrice * (1 - status.discount);
+    $('#order-total-price-with-status').val(orderTotalPriceWithStatus);
+    $('#order-status').val(status.name);
+
+    $('#order-points-count').val(orderTotalPriceWithStatus * 0.1);
 
     document.getElementById('order-list').innerHTML = orderListString;
 
@@ -311,7 +330,9 @@ function sendOrder() {
     if (detailsForm.checkValidity() === true) {
         document.getElementById('order-controls').classList.add("d-none");
 
-        // alert("111")
+        clientPoints += parseInt($('#order-points-count').val());
+        username = $('#full-name').val();
+        showClientInformation();
     }
 }
 
@@ -331,8 +352,45 @@ function closeOrder() {
     $('#submit-order-success').collapse('hide');
 }
 
-function cancelDeclineOrder(){
+function cancelDeclineOrder() {
     $('#submit-order-decline').collapse('hide');
+}
+
+function showClientInformation() {
+    document.getElementById('username').innerText = username;
+
+    document.getElementById('client-bar').classList.remove("d-none");
+
+    document.getElementById("bonus-points").innerText = clientPoints;
+
+    var status = getClientStatus();
+    document.getElementById('client-status').innerText = status.name;
+    document.getElementById('client-discount').innerText = 100 * status.discount;
+
+    var nextStatus;
+    for (var obj of clientStatuses) {
+        if (obj.points > clientPoints) {
+            nextStatus = obj;
+            break;
+        }
+    }
+    if (nextStatus === undefined) {
+        document.getElementById('next-client-status-points-remains').innerText = "У вас максимальный уровень!";
+    } else {
+        var remains = nextStatus.points - clientPoints;
+        document.getElementById('next-client-status-points-remains').innerText = remains;
+    }
+
+}
+
+function getClientStatus() {
+    var res;
+    for (var obj of clientStatuses) {
+        if (obj.points <= clientPoints) {
+            res = obj;
+        }
+    }
+    return res;
 }
 
 function addValidationForOrderDetails() {
