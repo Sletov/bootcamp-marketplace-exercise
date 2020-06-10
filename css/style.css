@@ -98,3 +98,8 @@
 #cart-clean, .cart-remove-from, #cart-send-order {
     font-size: inherit;
 }
+
+.popover-body {
+    max-height: 90vh;
+    overflow-y: auto;
+}

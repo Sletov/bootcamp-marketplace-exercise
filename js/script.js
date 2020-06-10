@@ -454,7 +454,6 @@ function initCartPopover(contentString) {
         placement: 'left',
         container: 'body',
         html: true,
-        // animation: false,
         content: contentString
     }).on('show.bs.popover', function () {
         document.getElementById("cart-button").innerHTML =
