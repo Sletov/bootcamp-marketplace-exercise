@@ -199,6 +199,35 @@ function removeAllFromCart(id, size) {
     activateCartPopover();
 }
 
+function changeNewCartItemCount(id, size, count) {
+    var key = CartItemKey(id, size);
+    var cartItemId = `cart-item-${id}-${size}`;
+
+    if (count === 0){
+        cart.delete(key);
+
+        if (cart.size === 0){
+            createCartHtml();
+            activateCartPopover();
+        } else {
+            document.getElementById(cartItemId).remove();
+        }
+    } else {
+        var newCount = cart.get(key) + count;
+        var newPrice = newCount * data.get(id).price;
+
+        cart.set(key, newCount);
+
+        if (newCount === 0){
+            changeNewCartItemCount(id, size, newCount);
+        } else {
+            document.getElementById(cartItemId).getElementsByClassName("cart-count")[0].innerHTML = newCount;
+            document.getElementById(cartItemId).getElementsByClassName("cart-full-price")[0].innerHTML = newPrice;
+        }
+    }
+    changeCartTotalPrice();
+}
+
 function cleanCart() {
     cart.clear();
     createCartHtml();
@@ -222,7 +251,7 @@ function createCartHtml() {
             var price = item.price;
 
             contentString +=
-                `<div id='cart-item-${id}' class='cart-item w-100 float-left mx-auto'>
+                `<div id='cart-item-${id}-${size}' class='cart-item w-100 float-left mx-auto'>
                 <div class='cart-item-img float-left w-25'>
                 <img class='w-100' src='${img}'>
                 </div>
@@ -231,11 +260,11 @@ function createCartHtml() {
                 Размер: <span class='font-weight-bold cart-size'>${size.toUpperCase()}</span><br>
                 Стоимость: <span class='font-weight-bold cart-price'>${price}</span>p<br>
                 Количество:
-                <button type='button' class='cart-item-minus-button btn btn-light p-0' onclick="removeFromCart('${id}', '${size}')">-</button>
+                <button type='button' class='cart-item-minus-button btn btn-outline-success p-0' onclick="changeNewCartItemCount('${id}', '${size}', -1)">-</button>
                 <span class='font-weight-bold cart-count'>${count}</span>
-                <button type='button' class='cart-item-plus-button btn btn-light p-0' onclick="plusToCart('${id}', '${size}')">+</button><br>
+                <button type='button' class='cart-item-plus-button btn btn-outline-success p-0' onclick="changeNewCartItemCount('${id}', '${size}', 1)">+</button><br>
                 Общая стоимость: <span class='font-weight-bold cart-full-price'>${price * count}</span>p<br>
-                <button type='button' class='cart-remove-from btn btn-link' onclick="removeAllFromCart('${id}', '${size}')">
+                <button type='button' class='cart-remove-from btn btn-link' onclick="changeNewCartItemCount('${id}', '${size}', 0)">
                 <svg class='bi bi-cart-dash align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
                 <path fill-rule='evenodd' d='M6 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z'/>
                 <path fill-rule='evenodd' d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/>
@@ -250,16 +279,16 @@ function createCartHtml() {
         }
 
         contentString +=
-            `<div>
-            Итоговая стоимость: <span id='cart-total-price'>${totalPrice}</span>p<br>
-            <button type='button' class='cart-remove-from btn btn-link p-2' onclick="cleanCart()">
+            `<div id="cart-total-info">
+            Итоговая стоимость: <span id='cart-total-price' class="font-weight-bold">${totalPrice}</span>p<br>
+            <button type='button' id="cart-clean" class='btn btn-link p-2' onclick="cleanCart()">
                 <svg class='bi bi-cart-dash align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
                     <path fill-rule='evenodd' d='M6 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z'/>
                     <path fill-rule='evenodd' d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/>
                 </svg>
                 Очистить корзину
             </button><br>
-            <button type='button' class='cart-send-order btn btn-outline-success p-2' onclick="makeOrder()">
+            <button type='button' id='cart-send-order' class='btn btn-outline-success p-2' onclick="makeOrder()">
                 Оформить заказ
             </button>
             </div>`;
@@ -268,12 +297,27 @@ function createCartHtml() {
     }
 }
 
+function changeCartTotalPrice() {
+    if (cart.size !== 0) {
+        var totalPrice = 0;
+
+        for (var [key, count] of cart.entries()) {
+            var id = key.split(",")[0];
+            var item = data.get(id);
+            var price = item.price;
+
+            totalPrice += price * count;
+        }
+        document.getElementById('cart-total-price').innerHTML = totalPrice;
+    }
+}
+
 function makeOrder() {
     document.getElementById('item-list-block').classList.add("d-none");
     document.getElementById('filter-block').classList.add("d-none");
 
     document.getElementById('cart-button').classList.add("disabled");
-    $('#cart-button').popover('dispose');
+    $('#cart-button').popover('hide').popover('dispose');
 
     document.getElementById('order-block').classList.remove("d-none");
 
@@ -406,14 +450,30 @@ function addValidationForOrderDetails() {
 }
 
 function initCartPopover(contentString) {
-    $('#cart-button').popover('dispose').popover({
+    $('#cart-button').popover('hide').popover('dispose').popover({
         placement: 'left',
+        container: 'body',
         html: true,
-        content: contentString,
-        trigger: 'focus'
-    });
+        // animation: false,
+        content: contentString
+    }).on('show.bs.popover', function () {
+        document.getElementById("cart-button").innerHTML =
+            `<svg class="bi bi-x align-middle" width='1.5em' height='1.5em' viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+                <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
+            </svg>Закрыть`;
+    }).on('hide.bs.popover', function () {
+        document.getElementById("cart-button").innerHTML =
+            `<svg class="bi bi-cart4 align-middle" width='1.5em' height='1.5em' viewBox="0 0 16 16"
+                         fill="currentColor"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                              d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+                    </svg>
+                        Корзина`;
+    })
 }
 
 function activateCartPopover() {
-    $('#cart-button').popover('toggle').focus();
+    $('#cart-button').popover('show').click();
 }

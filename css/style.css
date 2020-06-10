@@ -10,7 +10,7 @@
     }
 
     .popover {
-        max-width: 60%;
+        max-width: 65%;
         font-size: 1.5em;
     }
 
@@ -70,8 +70,10 @@
         width: 1.5em;
         height: 1.5em;
         font-size: inherit;
-        margin-left: 0.8em;
-        margin-right: 0.8em;
+        padding-right: 0.1em;
+        padding-left: 0.1em;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
     }
 
     /* FILTER */
@@ -93,6 +95,6 @@
     font-size: inherit;
 }
 
-.cart-remove-from, .cart-send-order {
+#cart-clean, .cart-remove-from, #cart-send-order {
     font-size: inherit;
 }
