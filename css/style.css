@@ -89,6 +89,10 @@
         width: 5rem;
         font-size: 0.9em;
     }
+
+    .popover {
+        max-width: 25%;
+    }
 }
 
 .add-to-cart {
@@ -99,7 +103,15 @@
     font-size: inherit;
 }
 
-.popover-body {
-    max-height: 90vh;
+
+
+.popover {
+    border: 3px solid green;
+    padding-right: 0 !important;
+}
+
+
+#cart-items-list {
+    max-height: 80vh;
     overflow-y: auto;
 }
