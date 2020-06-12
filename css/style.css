@@ -5,7 +5,7 @@
         font-size: 1.3em;
     }
 
-    .item, .navbar-brand, #cart-button {
+    .item, .order-item, .navbar-brand, #cart-button {
         font-size: 1.5em;
     }
 
@@ -26,7 +26,7 @@
         margin-right: 0.5em;
     }
 
-    #order-details-form, #order-info, #order-controls, #submit-order-success{
+    #order-details-form, #order-info, #order-controls, #submit-order-success {
         font-size: 1.4em;
     }
 
@@ -53,7 +53,11 @@
 }
 
 @media (min-width: 993px) {
-    .item {
+    #all-content {
+        min-width: 780px;
+    }
+
+    .item, .order-item {
         font-size: 0.9em;
     }
 
@@ -103,13 +107,9 @@
     font-size: inherit;
 }
 
-
-
 .popover {
     border: 3px solid green;
-    padding-right: 0 !important;
 }
-
 
 #cart-items-list {
     max-height: 80vh;

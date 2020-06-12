@@ -62,7 +62,7 @@ function showItem(id, item) {
     sizesBlock += "</div>";
 
     var cardString =
-        `<div id='${id}' class='list-item card'>
+        `<div id='${id}' class='item card'>
         <img class='card-img-top' src='${img}' alt='Card image cap'>
         <div class='card-body p-0 pl-2'>
         <div class='card-info'>${description} '${id}'</div>
@@ -81,7 +81,7 @@ function showItem(id, item) {
         </div>`;
 
     var card = document.createElement('div');
-    card.className = 'item float-left col-6 col-lg-3 p-0 p-lg-3';
+    card.className = 'float-left col-6 col-lg-3 p-0 p-lg-3';
     card.innerHTML = cardString;
 
     listBlock.appendChild(card);
@@ -168,37 +168,6 @@ function addToCart(id) {
     }
 }
 
-function plusToCart(id, size) {
-    var key = CartItemKey(id, size);
-
-    cart.set(key, cart.get(key) + 1);
-
-    createCartHtml();
-    activateCartPopover();
-}
-
-function removeFromCart(id, size) {
-    var key = CartItemKey(id, size);
-
-    if (cart.get(key) === 1) {
-        cart.delete(key);
-
-    } else if (cart.get(key) > 1) {
-        cart.set(key, cart.get(key) - 1);
-    }
-
-    createCartHtml();
-    activateCartPopover();
-}
-
-function removeAllFromCart(id, size) {
-    var key = CartItemKey(id, size);
-
-    cart.delete(key);
-    createCartHtml();
-    activateCartPopover();
-}
-
 function changeNewCartItemCount(id, size, count) {
     var key = CartItemKey(id, size);
     var cartItemId = `cart-item-${id}-${size}`;
@@ -206,11 +175,10 @@ function changeNewCartItemCount(id, size, count) {
     if (count === 0) {
         cart.delete(key);
 
-        if (cart.size === 0) {
-            createCartHtml();
-            activateCartPopover();
-        } else {
+        if (cart.size !== 0) {
             document.getElementById(cartItemId).remove();
+        } else {
+            createCartHtml();
         }
     } else {
         var newCount = cart.get(key) + count;
@@ -231,15 +199,15 @@ function changeNewCartItemCount(id, size, count) {
 function cleanCart() {
     cart.clear();
     createCartHtml();
-    activateCartPopover();
 }
 
 function createCartHtml() {
 
+    var contentString;
     if (cart.size === 0) {
-        initCartPopover('Корзина пуста');
+        contentString = 'Корзина пуста';
     } else {
-        var contentString = "<div id='cart-items-list'>";
+        contentString = "<div id='cart-items-list'>";
 
         var totalPrice = 0;
 
@@ -293,9 +261,10 @@ function createCartHtml() {
                 Оформить заказ
             </button>
             </div>`;
-
-        initCartPopover(contentString);
     }
+
+    document.getElementById("cart-content").innerHTML = contentString;
+    $('#cart-button').popover('update');
 }
 
 function changeCartTotalPrice() {
@@ -318,7 +287,7 @@ function makeOrder() {
     document.getElementById('filter-block').classList.add("d-none");
 
     document.getElementById('cart-button').classList.add("disabled");
-    $('#cart-button').popover('hide').popover('dispose');
+    $('#cart-button').popover('hide');
 
     document.getElementById('order-block').classList.remove("d-none");
 
@@ -336,12 +305,12 @@ function makeOrder() {
         var price = item.price;
 
         orderListString +=
-            `<div class="item col-6 col-lg-3 p-0 p-lg-3">
-                <div id='${id}' class='order-list-item card'>
+            `<div class="order-item col-6 col-lg-3 p-0 p-lg-3">
+                <div id='order-item-${id}-${size.toLowerCase()}' class='order-list-item card'>
                     <img class='card-img-top' src='${img}' alt='Card image cap'>
                     <div class='card-body p-0 pl-2'>
                         <div class='card-info'>${description} '${id}'</div>
-                        <div class='card-info'>Размер: <span class='size font-weight-bold'>${size}</span></div>
+                        <div class='card-info'>Размер: <span class='size font-weight-bold'>${size.toUpperCase()}</span></div>
                         <div class='card-info'>Стоимость: <span class='price font-weight-bold'>${price}</span>p</div>
                         <div class='card-info'>Количество: <span class='count font-weight-bold'>${count}</span></div>
                         <div class='card-info'>Общая стоимость: <span class='total-price font-weight-bold'>${price * count}</span>p</div>
@@ -388,7 +357,6 @@ function closeOrder() {
     document.getElementById('filter-block').classList.remove("d-none");
 
     document.getElementById('cart-button').classList.remove("disabled");
-    createCartHtml();
 
     document.getElementById('order-block').classList.add("d-none");
     document.getElementById('order-controls').classList.remove("d-none");
@@ -450,18 +418,20 @@ function addValidationForOrderDetails() {
     })
 }
 
-function initCartPopover(contentString) {
-    $('#cart-button').popover('hide').popover('dispose').popover({
+function initCartPopover() {
+    $('#cart-button').popover({
         placement: 'left',
         container: 'body',
         html: true,
-        content: contentString
+        animation: false,
+        content: "<div id='cart-content'>"
     }).on('show.bs.popover', function () {
         document.getElementById("cart-button").innerHTML =
             `<svg class="bi bi-x align-middle" width='1.5em' height='1.5em' viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
                 <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
-            </svg>Закрыть`;
+            </svg>
+            Закрыть`;
     }).on('hide.bs.popover', function () {
         document.getElementById("cart-button").innerHTML =
             `<svg class="bi bi-cart4 align-middle" width='1.5em' height='1.5em' viewBox="0 0 16 16"
@@ -471,9 +441,8 @@ function initCartPopover(contentString) {
                               d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
             </svg>
             Корзина`;
+    }).on('shown.bs.popover', function () {
+        createCartHtml();
     });
-}
 
-function activateCartPopover() {
-    $('#cart-button').popover('show').click();
 }
