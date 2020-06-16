@@ -160,7 +160,7 @@ function addToCart(id) {
         var key = CartItemKey(id, targetSize)
 
         if (cart.has(key)) {
-            cart.set(key, cart.get(key) + 1);
+            cart.set(key, cart.get(key));
         } else {
             cart.set(key, 1);
         }
@@ -168,30 +168,47 @@ function addToCart(id) {
     }
 }
 
-function changeNewCartItemCount(id, size, count) {
+function minusCartItemCount(id, size) {
     var key = CartItemKey(id, size);
     var cartItemId = `cart-item-${id}-${size}`;
 
-    if (count === 0) {
-        cart.delete(key);
+    var newCount = cart.get(key) - 1;
+    var newPrice = newCount * data.get(id).price;
 
-        if (cart.size !== 0) {
-            document.getElementById(cartItemId).remove();
-        } else {
-            createCartHtml();
-        }
+    if (newCount === 0) {
+        deleteItemFromCart(id, size);
     } else {
-        var newCount = cart.get(key) + count;
-        var newPrice = newCount * data.get(id).price;
-
         cart.set(key, newCount);
 
-        if (newCount === 0) {
-            changeNewCartItemCount(id, size, newCount);
-        } else {
-            document.getElementById(cartItemId).getElementsByClassName("cart-count")[0].innerHTML = newCount;
-            document.getElementById(cartItemId).getElementsByClassName("cart-full-price")[0].innerHTML = newPrice;
-        }
+        document.getElementById(cartItemId).getElementsByClassName("cart-count")[0].innerHTML = newCount;
+        document.getElementById(cartItemId).getElementsByClassName("cart-full-price")[0].innerHTML = newPrice;
+    }
+}
+
+function plusCartItemCount(id, size) {
+    var key = CartItemKey(id, size);
+    var cartItemId = `cart-item-${id}-${size}`;
+
+    var newCount = cart.get(key) + 1;
+    var newPrice = newCount * data.get(id).price;
+
+    cart.set(key, newCount);
+
+    document.getElementById(cartItemId).getElementsByClassName("cart-count")[0].innerHTML = newCount;
+    document.getElementById(cartItemId).getElementsByClassName("cart-full-price")[0].innerHTML = newPrice;
+    changeCartTotalPrice();
+}
+
+function deleteItemFromCart(id, size) {
+    var key = CartItemKey(id, size);
+    var cartItemId = `cart-item-${id}-${size}`;
+
+    cart.delete(key);
+
+    if (cart.size !== 0) {
+        document.getElementById(cartItemId).remove();
+    } else {
+        createCartHtml();
     }
     changeCartTotalPrice();
 }
@@ -228,11 +245,11 @@ function createCartHtml() {
                 Размер: <span class='font-weight-bold cart-size'>${size.toUpperCase()}</span><br>
                 Стоимость: <span class='font-weight-bold cart-price'>${price}</span>p<br>
                 Количество:
-                <button type='button' class='cart-item-minus-button btn btn-outline-success p-0' onclick="changeNewCartItemCount('${id}', '${size}', -1)">-</button>
+                <button type='button' class='cart-item-minus-button btn btn-outline-success p-0' onclick="minusCartItemCount('${id}', '${size}')">-</button>
                 <span class='font-weight-bold cart-count'>${count}</span>
-                <button type='button' class='cart-item-plus-button btn btn-outline-success p-0' onclick="changeNewCartItemCount('${id}', '${size}', 1)">+</button><br>
+                <button type='button' class='cart-item-plus-button btn btn-outline-success p-0' onclick="plusCartItemCount('${id}', '${size}')">+</button><br>
                 Общая стоимость: <span class='font-weight-bold cart-full-price'>${price * count}</span>p<br>
-                <button type='button' class='cart-remove-from btn btn-link' onclick="changeNewCartItemCount('${id}', '${size}', 0)">
+                <button type='button' class='cart-remove-from btn btn-link' onclick="deleteItemFromCart('${id}', '${size}')">
                 <svg class='bi bi-cart-dash align-middle' width='1.2em' height='1.2em' viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
                 <path fill-rule='evenodd' d='M6 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z'/>
                 <path fill-rule='evenodd' d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/>
@@ -329,7 +346,7 @@ function makeOrder() {
     $('#order-total-count').val(totalCount);
 
     var status = getClientStatus();
-    var orderTotalPriceWithStatus = totalPrice * (1 - status.discount);
+    var orderTotalPriceWithStatus = totalPrice * (1 + status.discount);
     $('#order-total-price-with-status').val(orderTotalPriceWithStatus);
     $('#order-status').val(status.name);
 
